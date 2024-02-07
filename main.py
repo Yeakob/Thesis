@@ -10,22 +10,11 @@ import xlsxwriter
 import os
 import pygsheets
 
-def get_total_pages(url):
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, 'html.parser')
-    pagination_element = soup.find('ul', class_='pagination')
-    if pagination_element:
-        page_links = pagination_element.find_all('a', class_='page-link')
-        if page_links:
-            last_page_number = int(page_links[-2].text)
-            return last_page_number
-    return 1
+
 
 def scrape_data(base_url):
     all_data = []
 
-    total_pages = get_total_pages(base_url.format(1))
-    print(f"Total Pages: {total_pages}")
 
     for page_number in range(1, 200):  # Iterate through all pages
         try:
@@ -78,11 +67,24 @@ def write_to_google_sheet(all_data):
     wks.set_dataframe(df, start='A1')
 
 # Set up Selenium webdriver with options
-chrome_options = Options()
-chrome_options.add_argument("--headless")  # To run Chrome in headless mode
-chrome_options.add_experimental_option("prefs", {"profile.default_content_setting_values.geolocation": 2})
-service = Service('/usr/bin/chromedriver')  # Provide path to chromedriver executable
-driver = webdriver.Chrome(service=service, options=chrome_options)
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+from datetime import datetime
+import os
+import pygsheets
+import pandas as pd
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.support.ui import WebDriverWait
+import time
+import gspread
+OPTIONS = webdriver.ChromeOptions()
+prefs = {"profile.default_content_setting_values.geolocation": 2}
+OPTIONS.add_experimental_option("prefs", prefs)
+OPTIONS.add_argument("--headless")
+
+driver = webdriver.Chrome(options=OPTIONS)
 
 # Base URL to scrape with pagination
 # base_url = 'https://www.othoba.com/furniture-big-saving-days-offers?pagenumber={}&orderby=0&pagesize=40'
