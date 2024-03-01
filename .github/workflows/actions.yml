@@ -30,18 +30,18 @@ jobs:
 
     - name: Install Chrome
       run: |
-          wget -O chrome-linux64.zip https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/120.0.6099.109/linux64/chrome-linux64.zip
+          wget -O chrome-linux64.zip https://storage.googleapis.com/chrome-for-testing-public/122.0.6261.94/linux64/chrome-linux64.zip
           unzip chrome-linux64.zip
           sudo mv -f chrome-linux64/chrome /usr/local/bin/
 
     - name: Install ChromeDriver
       run: |
-          wget -O chromedriver-linux64.zip https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/120.0.6099.109/linux64/chromedriver-linux64.zip
+          wget -O chromedriver-linux64.zip https://storage.googleapis.com/chrome-for-testing-public/122.0.6261.94/linux64/chromedriver-linux64.zip
           unzip chromedriver-linux64.zip
           sudo chmod +x chromedriver-linux64/chromedriver
           sudo rm -f /usr/local/share/chromedriver/chromedriver  # Remove the previous chromedriver
           sudo mv -f chromedriver-linux64/chromedriver /usr/local/share/chromedriver
-          sudo rm -f /usr/bin/chromedriver  # Remove the existing symbolic link, if it exists
+          sudo rm -f /usr/bin/chromedriver  
           sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
 
     - name: Print Chrome and ChromeDriver versions
@@ -49,5 +49,14 @@ jobs:
         google-chrome --version
         chromedriver --version
 
-    - name: Run Web Scraping Script
+    - name: Run Web Scraping First Script
       run: python main.py 
+      
+    - name: Run Web Scraping Second Script
+      run: python main1.py 
+
+    - name: Run Web Scraping Third Script
+      run: python main2.py 
+      
+    # - name: Merged chaldal datasets script-Second Script(main1.py)
+    #   run: python merged_chal_dal_main1.py
