@@ -52,11 +52,3 @@ jobs:
     - name: Run Web Scraping First Script
       run: python main.py 
       
-    - name: Run Web Scraping Second Script
-      run: python main1.py 
-
-    - name: Run Web Scraping Third Script
-      run: python main2.py 
-      
-    # - name: Merged chaldal datasets script-Second Script(main1.py)
-    #   run: python merged_chal_dal_main1.py
